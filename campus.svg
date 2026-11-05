@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1000" viewBox="0 0 1920 1000" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="960" y1="0" x2="960" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7E9CAC"/>
+      <stop offset=".48" stop-color="#D2AA82"/>
+      <stop offset="1" stop-color="#E9C394"/>
+    </linearGradient>
+    <linearGradient id="walls" x1="960" y1="356" x2="960" y2="770" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3E9D1"/>
+      <stop offset="1" stop-color="#CDBB9D"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="960" y1="238" x2="960" y2="401" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#537967"/>
+      <stop offset="1" stop-color="#254E3E"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="960" y1="670" x2="960" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#82775D"/>
+      <stop offset="1" stop-color="#414B3B"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#708C8C"/>
+      <stop offset="1" stop-color="#324F4C"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="170" y="214" width="1574" height="611" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="25"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1000" fill="url(#sky)"/>
+  <circle cx="1518" cy="197" r="95" fill="#F4CD8B" opacity=".8"/>
+  <path d="M0 371c178-126 306-128 481-32 99-139 233-172 389-63 156-132 340-113 456 10 128-124 305-113 594 47v248H0V371Z" fill="#D6D1BD" opacity=".21"/>
+  <path d="M0 501c228-129 397-130 580-15 119-129 245-154 395-31 137-104 275-93 409 37 168-130 342-123 536-4v237H0V501Z" fill="#53645A" opacity=".23"/>
+  <path d="M0 601c227-83 408-91 622-10 192-71 392-83 596-9 225-80 468-67 702-8v426H0V601Z" fill="#4B654F" opacity=".54"/>
+  <path d="M0 721c256-84 490-94 724-22 237-69 478-67 709 4 185-63 354-59 487-13v310H0V721Z" fill="url(#ground)"/>
+  <ellipse cx="962" cy="759" rx="785" ry="43" fill="#252E28" opacity=".3" filter="url(#soft-shadow)"/>
+
+  <!-- School wings and covered entrance -->
+  <path d="M179 432 442 311l236 98v359H179V432Z" fill="url(#walls)"/>
+  <path d="m160 437 275-158 269 119-260 118-284-79Z" fill="#28533F"/>
+  <path d="m212 432 230-131 211 93-226 112-215-74Z" fill="url(#roof)"/>
+  <path d="m450 454 511-191 490 196v311H450V454Z" fill="url(#walls)"/>
+  <path d="m414 454 546-230 541 227-540 130-547-127Z" fill="#214C3A"/>
+  <path d="m480 444 479-202 477 201-481 113-475-112Z" fill="url(#roof)"/>
+  <path d="M1242 411 1478 314l263 126v328h-499V411Z" fill="#D9C9A8"/>
+  <path d="m1200 421 278-143 283 152-278 111-283-120Z" fill="#214C3A"/>
+  <path d="m1261 414 215-111 218 117-216 87-217-93Z" fill="url(#roof)"/>
+
+  <!-- Main entrance -->
+  <path d="M814 456h289v320H814V456Z" fill="#C5AE89"/>
+  <path d="M842 458h233v318H842V458Z" fill="#E9DCC0"/>
+  <path d="m809 456 149-92 155 92H809Z" fill="#315B45"/>
+  <path d="M902 571c0-36 25-64 57-64s57 28 57 64v205H902V571Z" fill="#604B36"/>
+  <path d="M925 586c0-21 15-38 34-38s34 17 34 38v190h-68V586Z" fill="#324A3B"/>
+  <circle cx="978" cy="681" r="5" fill="#DCC697"/>
+  <rect x="941" y="422" width="37" height="17" rx="4" fill="#E8DABB"/>
+  <path d="M948 430h23" stroke="#6D765C" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Classrooms and corridor windows -->
+  <g fill="#4C604F" opacity=".27">
+    <rect x="247" y="485" width="207" height="8" rx="4"/><rect x="492" y="497" width="169" height="8" rx="4"/>
+    <rect x="1136" y="486" width="206" height="8" rx="4"/><rect x="1371" y="478" width="219" height="8" rx="4"/>
+  </g>
+  <g fill="url(#glass)" stroke="#E9DDC4" stroke-width="10">
+    <rect x="231" y="513" width="65" height="104" rx="3"/><rect x="319" y="513" width="65" height="104" rx="3"/>
+    <rect x="472" y="536" width="72" height="111" rx="3"/><rect x="564" y="536" width="72" height="111" rx="3"/>
+    <rect x="659" y="536" width="72" height="111" rx="3"/>
+    <rect x="1129" y="536" width="72" height="111" rx="3"/><rect x="1221" y="536" width="72" height="111" rx="3"/>
+    <rect x="1314" y="536" width="72" height="111" rx="3"/>
+    <rect x="1514" y="512" width="65" height="104" rx="3"/><rect x="1603" y="512" width="65" height="104" rx="3"/>
+  </g>
+  <g stroke="#D8C9AA" stroke-width="5" opacity=".85">
+    <path d="M263 514v102m-32-51h64M351 514v102m-32-51h64M508 537v109m-36-55h72M600 537v109m-36-55h72M695 537v109m-36-55h72"/>
+    <path d="M1165 537v109m-36-55h72M1257 537v109m-36-55h72M1350 537v109m-36-55h72M1546 513v103m-32-51h64M1635 513v103m-32-51h64"/>
+  </g>
+
+  <!-- Courtyard, shade trees, and learners -->
+  <path d="M0 816c268-62 505-70 744-24 204 40 410 41 615 2 203-39 390-32 561 12v194H0V816Z" fill="#6F7054"/>
+  <path d="M0 887c258-43 514-44 764-4 222 35 445 33 668-4 177-29 342-28 488 0v121H0V887Z" fill="#565E46"/>
+  <g opacity=".95">
+    <path d="M93 641h37v181H93z" fill="#594B37"/><circle cx="110" cy="600" r="91" fill="#405C45"/><circle cx="63" cy="642" r="50" fill="#526D4C"/><circle cx="158" cy="649" r="56" fill="#60754B"/>
+    <path d="M1772 634h39v184h-39z" fill="#594B37"/><circle cx="1792" cy="590" r="100" fill="#3D5941"/><circle cx="1736" cy="636" r="60" fill="#536C49"/><circle cx="1850" cy="645" r="58" fill="#60754B"/>
+  </g>
+  <!-- Students are shown as dark-skinned learners walking together across the courtyard. -->
+  <g>
+    <circle cx="682" cy="777" r="22" fill="#633D2D"/>
+    <path d="M660 776c1-26 13-39 29-39 15 0 27 13 27 36-9-8-18-11-29-11-9 0-19 5-27 14Z" fill="#211916"/>
+    <path d="M664 805c-20 19-25 46-22 78l6 42h73l5-44c3-30-6-61-27-77l-17 19-18-18Z" fill="#C56845"/>
+    <path d="m661 823-31 45m83-44 27 41" stroke="#633D2D" stroke-width="13" stroke-linecap="round"/>
+    <path d="m666 922-7 54m48-54 9 54" stroke="#292D29" stroke-width="13" stroke-linecap="round"/>
+    <circle cx="792" cy="768" r="23" fill="#754630"/>
+    <path d="M769 766c-1-26 11-40 28-40 16 0 28 14 27 39-9-9-19-13-29-13s-18 5-26 14Z" fill="#211916"/>
+    <path d="M770 798c-17 16-24 42-22 73l5 53h81l4-54c2-29-5-54-25-72l-19 17-24-17Z" fill="#E2C58D"/>
+    <path d="m767 817-29 47m82-45 29 45" stroke="#754630" stroke-width="13" stroke-linecap="round"/>
+    <path d="m772 922-5 54m47-54 5 54" stroke="#292D29" stroke-width="13" stroke-linecap="round"/>
+    <circle cx="1200" cy="776" r="22" fill="#603925"/>
+    <path d="M1178 775c1-25 12-38 28-38 16 0 27 13 27 37-9-8-18-12-29-12-10 0-18 4-26 13Z" fill="#191614"/>
+    <path d="M1181 804c-19 17-26 44-23 76l4 45h76l5-47c3-30-5-56-26-74l-18 18-18-18Z" fill="#577D82"/>
+    <path d="m1178 823-29 44m81-43 28 44" stroke="#603925" stroke-width="13" stroke-linecap="round"/>
+    <path d="m1182 922-5 54m47-54 8 54" stroke="#292D29" stroke-width="13" stroke-linecap="round"/>
+  </g>
+</svg>
