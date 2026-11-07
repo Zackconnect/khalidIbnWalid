@@ -110,6 +110,172 @@ function renderRecords() {
     `).join('');
 }
 
+const SUBMISSIONS_STORAGE_KEY = 'khalid-ibn-walid-submissions';
+const submissionsBody = document.querySelector('[data-submissions-body]');
+const submissionFilter = document.querySelector('[data-submission-filter-select]');
+const submissionCount = document.querySelector('[data-submission-count]');
+const submissionsMessage = document.querySelector('[data-submissions-message]');
+let submissions = loadSubmissions();
+
+function loadSubmissions() {
+    try {
+        const saved = window.localStorage.getItem(SUBMISSIONS_STORAGE_KEY);
+        if (!saved) {
+            return [];
+        }
+
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed)) {
+            throw new Error('Stored submissions are not in the expected format.');
+        }
+
+        return parsed;
+    } catch (error) {
+        console.error('Unable to load website submissions.', error);
+        return [];
+    }
+}
+
+function persistSubmissions() {
+    try {
+        window.localStorage.setItem(SUBMISSIONS_STORAGE_KEY, JSON.stringify(submissions));
+        return true;
+    } catch (error) {
+        console.error('Unable to save website submissions.', error);
+        return false;
+    }
+}
+
+function setSubmissionsMessage(message) {
+    if (submissionsMessage) {
+        submissionsMessage.textContent = message;
+    }
+}
+
+function submissionTypeLabel(type) {
+    const labels = {
+        message: 'Message',
+        donation: 'Donation request',
+        zakat: 'Zakat request',
+        qurbani: 'Layyah request',
+        admission: 'Admission'
+    };
+
+    return labels[type] || 'Website request';
+}
+
+function submissionName(submission) {
+    const data = submission.data || {};
+    return data.contactName || data.donorName || data.zakatName || data.qurbaniName
+        || data.firstName && `${data.firstName} ${data.lastName || ''}`.trim()
+        || data.parentName
+        || 'Website visitor';
+}
+
+function submissionContact(submission) {
+    const data = submission.data || {};
+    const email = data.contactEmail || data.donorEmail || data.zakatEmail || data.qurbaniEmail || data.email || '';
+    const phone = data.contactPhone || data.donorPhone || data.zakatPhone || data.qurbaniPhone || data.phone || '';
+    return [email, phone].filter(Boolean).join(' · ') || 'No contact provided';
+}
+
+function submissionSummary(submission) {
+    const data = submission.data || {};
+    if (submission.type === 'message') {
+        return data.contactSubject || 'General inquiry';
+    }
+    if (submission.type === 'admission') {
+        return data.programme || 'Admission application';
+    }
+    if (submission.type === 'qurbani') {
+        return `${data.quantity || 1} × ${data.animalType || 'Animal'} · ${formatCurrency(Number(data.amount) || 0)}`;
+    }
+    if (submission.type === 'zakat') {
+        return `${data.zakatType || 'Zakat'} · ${formatCurrency(Number(data.zakatAmount) || 0)}`;
+    }
+    if (submission.type === 'donation') {
+        return `${data.donationType || 'Donation'} · ${formatCurrency(Number(data.amount) || 0)}`;
+    }
+    return 'Website submission';
+}
+
+function submissionDetails(data) {
+    const entries = Object.entries(data || {}).filter(([, value]) => value !== '' && value !== null && value !== undefined);
+    if (!entries.length) {
+        return '<p>No additional details.</p>';
+    }
+
+    return `<dl class="submission-details">${entries.map(([key, value]) => `
+        <div><dt>${escapeHtml(key.replace(/([A-Z])/g, ' $1'))}</dt><dd>${escapeHtml(value === 'on' ? 'Yes' : value)}</dd></div>
+    `).join('')}</dl>`;
+}
+
+function matchesSubmissionFilter(type, filter) {
+    if (filter === 'all') return true;
+    if (filter === 'donations') return type === 'donation' || type === 'zakat';
+    if (filter === 'finance') return type === 'donation' || type === 'zakat' || type === 'qurbani';
+    return type === filter;
+}
+
+function renderSubmissions() {
+    if (!submissionsBody) {
+        return;
+    }
+
+    const term = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    const filter = submissionFilter ? submissionFilter.value : 'all';
+    const visibleSubmissions = submissions.filter((submission) => {
+        const searchableText = [
+            submissionTypeLabel(submission.type),
+            submissionName(submission),
+            submissionContact(submission),
+            submissionSummary(submission),
+            JSON.stringify(submission.data || {})
+        ].join(' ').toLowerCase();
+
+        return matchesSubmissionFilter(submission.type, filter) && (!term || searchableText.includes(term));
+    });
+
+    const newCount = submissions.filter((submission) => submission.status === 'New').length;
+    if (submissionCount) {
+        submissionCount.textContent = `${submissions.length} submissions · ${newCount} new`;
+    }
+
+    if (!visibleSubmissions.length) {
+        submissionsBody.innerHTML = '<tr><td colspan="6" class="empty-state">No website submissions yet. New form entries will appear here.</td></tr>';
+        return;
+    }
+
+    submissionsBody.innerHTML = visibleSubmissions.map((submission) => {
+        const detailsId = `submission-details-${escapeHtml(submission.id)}`;
+        const submittedAt = new Date(submission.submittedAt);
+        const dateLabel = Number.isNaN(submittedAt.getTime())
+            ? 'Unknown date'
+            : submittedAt.toLocaleString();
+        const status = submission.status === 'Reviewed' ? 'Reviewed' : 'New';
+
+        return `
+            <tr>
+                <td><span class="tag ${status === 'New' ? 'warning' : 'success'}">${escapeHtml(submissionTypeLabel(submission.type))}</span></td>
+                <td><strong>${escapeHtml(submissionName(submission))}</strong><small class="submission-contact">${escapeHtml(submissionContact(submission))}</small></td>
+                <td>${escapeHtml(submissionSummary(submission))}</td>
+                <td>${escapeHtml(dateLabel)}</td>
+                <td><span class="tag ${status === 'New' ? 'warning' : 'success'}">${status}</span></td>
+                <td>
+                    <div class="table-actions">
+                        <button class="table-action edit" type="button" data-submission-action="details" data-id="${escapeHtml(submission.id)}" aria-expanded="false" aria-controls="${detailsId}">Details</button>
+                        <button class="table-action" type="button" data-submission-action="toggle-status" data-id="${escapeHtml(submission.id)}">${status === 'New' ? 'Review' : 'Mark new'}</button>
+                        <button class="table-action delete" type="button" data-submission-action="delete" data-id="${escapeHtml(submission.id)}">Delete</button>
+                    </div>
+                </td>
+            </tr>
+            <tr id="${detailsId}" class="submission-details-row" hidden>
+                <td colspan="6">${submissionDetails(submission.data)}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
 function closeModal() {
     if (!recordModal) {
         return;
@@ -191,7 +357,10 @@ function createRecordId() {
 }
 
 if (searchInput) {
-    searchInput.addEventListener('input', renderRecords);
+    searchInput.addEventListener('input', () => {
+        renderRecords();
+        renderSubmissions();
+    });
 }
 
 if (statusFilter) {
@@ -477,12 +646,77 @@ window.addEventListener('storage', (event) => {
         galleryItems = galleryApi.loadItems();
         renderGalleryManager();
     }
+
+    if (event.key === SUBMISSIONS_STORAGE_KEY) {
+        submissions = loadSubmissions();
+        renderSubmissions();
+    }
 });
+
+if (submissionFilter) {
+    submissionFilter.addEventListener('change', renderSubmissions);
+}
+
+if (submissionsBody) {
+    submissionsBody.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-submission-action]');
+        if (!button) {
+            return;
+        }
+
+        const submission = submissions.find((item) => item.id === button.dataset.id);
+        if (!submission) {
+            return;
+        }
+
+        if (button.dataset.submissionAction === 'details') {
+            const detailsRow = document.getElementById(button.getAttribute('aria-controls'));
+            if (detailsRow) {
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', String(!isExpanded));
+                detailsRow.hidden = isExpanded;
+            }
+            return;
+        }
+
+        if (button.dataset.submissionAction === 'toggle-status') {
+            const previousStatus = submission.status;
+            submission.status = previousStatus === 'New' ? 'Reviewed' : 'New';
+            if (!persistSubmissions()) {
+                submission.status = previousStatus;
+                setSubmissionsMessage('Could not update the submission in browser storage.');
+                return;
+            }
+            setSubmissionsMessage('');
+            renderSubmissions();
+            return;
+        }
+
+        if (button.dataset.submissionAction === 'delete'
+            && window.confirm(`Delete this ${submissionTypeLabel(submission.type).toLowerCase()} from the inbox?`)) {
+            const previousSubmissions = submissions;
+            submissions = submissions.filter((item) => item.id !== submission.id);
+            if (!persistSubmissions()) {
+                submissions = previousSubmissions;
+                renderSubmissions();
+                setSubmissionsMessage('Could not delete the submission from browser storage.');
+                return;
+            }
+            setSubmissionsMessage('');
+            renderSubmissions();
+        }
+    });
+}
 
 navItems.forEach((item) => {
     item.addEventListener('click', () => {
         navItems.forEach((node) => node.classList.remove('active'));
         item.classList.add('active');
+
+        if (item.dataset.submissionFilter && submissionFilter) {
+            submissionFilter.value = item.dataset.submissionFilter;
+            renderSubmissions();
+        }
 
         const targetId = item.dataset.navTarget;
         if (targetId) {
@@ -493,3 +727,4 @@ navItems.forEach((item) => {
 
 renderRecords();
 renderGalleryManager();
+renderSubmissions();

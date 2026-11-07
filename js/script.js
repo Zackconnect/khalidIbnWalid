@@ -144,12 +144,44 @@ function initFormHandling() {
     }
 }
 
+function saveWebsiteSubmission(type, data) {
+    const storageKey = 'khalid-ibn-walid-submissions';
+
+    try {
+        const saved = window.localStorage.getItem(storageKey);
+        const submissions = saved ? JSON.parse(saved) : [];
+        if (!Array.isArray(submissions)) {
+            throw new Error('Stored website submissions are not in the expected format.');
+        }
+
+        const id = window.crypto && typeof window.crypto.randomUUID === 'function'
+            ? window.crypto.randomUUID()
+            : `submission-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+        submissions.unshift({
+            id,
+            type,
+            data,
+            status: 'New',
+            submittedAt: new Date().toISOString()
+        });
+        window.localStorage.setItem(storageKey, JSON.stringify(submissions));
+        return true;
+    } catch (error) {
+        console.error('Unable to save website submission in this browser.', error);
+        return false;
+    }
+}
+
+function getSubmissionData(form) {
+    return Object.fromEntries(new FormData(form).entries());
+}
+
 // Admission Form Handler
 function handleAdmissionSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const data = getSubmissionData(e.target);
     
     // Validate required fields
     if (!data.firstName || !data.lastName || !data.email || !data.phone) {
@@ -157,7 +189,11 @@ function handleAdmissionSubmit(e) {
         return;
     }
 
-    // Simulate form submission
+    if (!saveWebsiteSubmission('admission', data)) {
+        showNotification('Your application could not be saved in this browser. Please try again.', 'error');
+        return;
+    }
+
     showNotification('Application submitted successfully! We will contact you soon.', 'success');
     e.target.reset();
 }
@@ -166,11 +202,15 @@ function handleAdmissionSubmit(e) {
 function handleDonationSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const data = getSubmissionData(e.target);
     
     if (!data.amount || !data.donorName) {
         showNotification('Please fill in all required fields', 'error');
+        return;
+    }
+
+    if (!saveWebsiteSubmission('donation', data)) {
+        showNotification('Your donation request could not be saved in this browser. Please try again.', 'error');
         return;
     }
 
@@ -182,11 +222,15 @@ function handleDonationSubmit(e) {
 function handleZakatSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const data = getSubmissionData(e.target);
     
-    if (!data.amount || !data.zakatType) {
+    if (!data.zakatAmount || !data.zakatType) {
         showNotification('Please fill in all required fields', 'error');
+        return;
+    }
+
+    if (!saveWebsiteSubmission('zakat', data)) {
+        showNotification('Your Zakat request could not be saved in this browser. Please try again.', 'error');
         return;
     }
 
@@ -198,15 +242,19 @@ function handleZakatSubmit(e) {
 function handleQurbaniSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const data = getSubmissionData(e.target);
     
-    if (!data.animalType || !data.quantity || !data.donorName) {
+    if (!data.animalType || !data.quantity || !data.qurbaniName) {
         showNotification('Please fill in all required fields', 'error');
         return;
     }
 
     const total = calculateQurbaniTotal(data.animalType, parseInt(data.quantity));
+    if (!saveWebsiteSubmission('qurbani', { ...data, amount: total })) {
+        showNotification('Your Layyah arrangement could not be saved in this browser. Please try again.', 'error');
+        return;
+    }
+
     showNotification(`Layyah arrangement submitted! Total: GHS ${total}. We will contact you for payment.`, 'success');
     e.target.reset();
 }
@@ -215,11 +263,15 @@ function handleQurbaniSubmit(e) {
 function handleContactSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const data = getSubmissionData(e.target);
     
-    if (!data.name || !data.email || !data.message) {
+    if (!data.contactName || !data.contactEmail || !data.contactMessage) {
         showNotification('Please fill in all required fields', 'error');
+        return;
+    }
+
+    if (!saveWebsiteSubmission('message', data)) {
+        showNotification('Your message could not be saved in this browser. Please try again.', 'error');
         return;
     }
 

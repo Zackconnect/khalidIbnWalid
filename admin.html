@@ -23,23 +23,23 @@
                     <span class="nav-icon">▣</span>
                     Overview
                 </button>
-                <button class="nav-item" type="button">
+                <button class="nav-item" type="button" data-nav-target="applicant-records">
                     <span class="nav-icon">◫</span>
                     Students
                 </button>
-                <button class="nav-item" type="button">
+                <button class="nav-item" type="button" data-nav-target="website-submissions" data-submission-filter="admission">
                     <span class="nav-icon">◎</span>
                     Admissions
                 </button>
-                <button class="nav-item" type="button">
+                <button class="nav-item" type="button" data-nav-target="website-submissions" data-submission-filter="finance">
                     <span class="nav-icon">◇</span>
                     Finance
                 </button>
-                <button class="nav-item" type="button">
+                <button class="nav-item" type="button" data-nav-target="website-submissions" data-submission-filter="donations">
                     <span class="nav-icon">✦</span>
                     Donors
                 </button>
-                <button class="nav-item" type="button">
+                <button class="nav-item" type="button" data-nav-target="website-submissions" data-submission-filter="message">
                     <span class="nav-icon">✉</span>
                     Messages
                 </button>
@@ -207,7 +207,7 @@
                 </article>
             </section>
 
-            <section class="bottom-grid">
+            <section class="bottom-grid" id="applicant-records">
                 <article class="panel table-panel">
                     <div class="panel-header">
                         <div>
@@ -250,6 +250,47 @@
                         <li><span>⚑</span> Assign staff to intake</li>
                     </ul>
                 </article>
+            </section>
+
+            <section class="panel submissions-panel" id="website-submissions" aria-labelledby="submissions-title">
+                <div class="panel-header submissions-panel__header">
+                    <div>
+                        <p class="eyebrow">Website inbox</p>
+                        <h2 id="submissions-title">Messages, donations & applications</h2>
+                        <p class="submissions-note">Requests submitted through the website. Donation entries are requests, not confirmation of payment received.</p>
+                    </div>
+                    <div class="submissions-controls">
+                        <label class="filter-box" aria-label="Filter website submissions">
+                            <span>Type</span>
+                            <select data-submission-filter-select>
+                                <option value="all">All submissions</option>
+                                <option value="message">Messages</option>
+                                <option value="donations">Donations & Zakat</option>
+                                <option value="qurbani">Layyah requests</option>
+                                <option value="admission">Applications</option>
+                                <option value="finance">All finance requests</option>
+                            </select>
+                        </label>
+                        <span class="chip" data-submission-count>0 submissions</span>
+                    </div>
+                </div>
+                <p class="submissions-message" data-submissions-message role="status" aria-live="polite"></p>
+                <div class="table-wrap">
+                    <table class="submissions-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name & contact</th>
+                                <th>Summary</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody data-submissions-body></tbody>
+                    </table>
+                </div>
+                <p class="submissions-storage-note">This static prototype stores submissions in this browser only. They are not shared across devices and do not replace a secure backend.</p>
             </section>
 
             <section class="panel gallery-manager" id="gallery-management" aria-labelledby="gallery-manager-title">
@@ -373,6 +414,6 @@
     </div>
 
     <script src="js/gallery.js?v=gallery-1"></script>
-    <script src="js/admin.js?v=gallery-1"></script>
+    <script src="js/admin.js?v=submissions-2"></script>
 </body>
 </html>
