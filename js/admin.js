@@ -255,11 +255,241 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+const galleryApi = window.KWGallery;
+const galleryManagerGrid = document.querySelector('[data-gallery-manager-grid]');
+const galleryMessage = document.querySelector('[data-gallery-message]');
+const galleryModal = document.querySelector('[data-gallery-modal]');
+const galleryForm = document.querySelector('[data-gallery-form]');
+const galleryAddButton = document.querySelector('[data-add-gallery-item]');
+const galleryCloseButtons = document.querySelectorAll('[data-close-gallery-modal]');
+const galleryFormError = document.querySelector('[data-gallery-form-error]');
+const galleryFormTitle = document.querySelector('#gallery-form-title');
+let galleryItems = galleryApi ? galleryApi.loadItems() : [];
+
+function setGalleryMessage(message, isError = false) {
+    if (!galleryMessage) {
+        return;
+    }
+
+    galleryMessage.textContent = message;
+    galleryMessage.classList.toggle('is-error', isError);
+}
+
+function renderGalleryManager() {
+    if (!galleryApi || !galleryManagerGrid) {
+        return;
+    }
+
+    if (!galleryItems.length) {
+        galleryManagerGrid.innerHTML = '<p class="gallery-manager__empty">Your gallery is empty. Add an image to start building it.</p>';
+        return;
+    }
+
+    galleryManagerGrid.innerHTML = galleryItems.map((item, index) => {
+        const preview = galleryApi.isSafeImageSource(item.image)
+            ? `<img src="${galleryApi.escapeHtml(item.image)}" alt="">`
+            : galleryApi.escapeHtml(item.icon || '✦');
+
+        return `
+            <article class="gallery-admin-card">
+                <div class="gallery-admin-card__image">${preview}</div>
+                <div class="gallery-admin-card__content">
+                    <h3 class="gallery-admin-card__title">${galleryApi.escapeHtml(item.title)}</h3>
+                    <span class="gallery-admin-card__category">${galleryApi.escapeHtml(galleryApi.categories[item.category] || 'Gallery')}</span>
+                    <div class="gallery-admin-card__actions">
+                        <button class="table-action edit" type="button" data-gallery-action="edit" data-id="${galleryApi.escapeHtml(item.id)}">Edit</button>
+                        <button class="table-action delete" type="button" data-gallery-action="delete" data-id="${galleryApi.escapeHtml(item.id)}">Delete</button>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+function openGalleryModal(item = null) {
+    if (!galleryForm || !galleryModal) {
+        return;
+    }
+
+    galleryForm.reset();
+    galleryFormError.textContent = '';
+    galleryForm.querySelector('[name="id"]').value = item ? item.id : '';
+    galleryForm.querySelector('[name="currentImage"]').value = item ? item.image || '' : '';
+    galleryForm.querySelector('[name="title"]').value = item ? item.title : '';
+    galleryForm.querySelector('[name="category"]').value = item ? item.category : 'campus';
+    galleryForm.querySelector('[name="icon"]').value = item ? item.icon || '✦' : '✦';
+    galleryForm.querySelector('[name="imageUrl"]').value = item && item.image && !item.image.startsWith('data:')
+        ? item.image
+        : '';
+    galleryFormTitle.textContent = item ? 'Edit gallery item' : 'Add gallery image';
+    galleryModal.classList.add('is-open');
+    galleryModal.setAttribute('aria-hidden', 'false');
+    galleryForm.querySelector('[name="title"]').focus();
+}
+
+function closeGalleryModal() {
+    if (!galleryModal || !galleryForm) {
+        return;
+    }
+
+    galleryModal.classList.remove('is-open');
+    galleryModal.setAttribute('aria-hidden', 'true');
+    galleryForm.reset();
+    galleryFormError.textContent = '';
+}
+
+function resizeGalleryImage(file) {
+    return new Promise((resolve, reject) => {
+        if (!file.type.startsWith('image/')) {
+            reject(new Error('Choose a valid image file.'));
+            return;
+        }
+
+        if (file.size > 4 * 1024 * 1024) {
+            reject(new Error('Choose an image smaller than 4 MB.'));
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(file);
+        const image = new Image();
+        image.onload = () => {
+            const maxDimension = 1440;
+            const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+            canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+            canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(objectUrl);
+            resolve(canvas.toDataURL('image/jpeg', 0.78));
+        };
+        image.onerror = () => {
+            URL.revokeObjectURL(objectUrl);
+            reject(new Error('This image could not be opened. Try another file.'));
+        };
+        image.src = objectUrl;
+    });
+}
+
+async function handleGalleryFormSubmit(event) {
+    event.preventDefault();
+    galleryFormError.textContent = '';
+
+    const formData = new FormData(galleryForm);
+    const id = String(formData.get('id') || createRecordId());
+    const currentItem = galleryItems.find((item) => item.id === id);
+    const imageFile = galleryForm.querySelector('[name="imageFile"]').files[0];
+    const imageUrl = String(formData.get('imageUrl') || '').trim();
+    let image = String(formData.get('currentImage') || '');
+
+    try {
+        if (formData.get('removeImage')) {
+            image = '';
+        } else if (imageFile) {
+            image = await resizeGalleryImage(imageFile);
+        } else if (imageUrl) {
+            image = imageUrl;
+        }
+
+        if (image && !galleryApi.isSafeImageSource(image)) {
+            throw new Error('Use an HTTP or HTTPS image URL, or upload an image file.');
+        }
+
+        const item = {
+            id,
+            title: String(formData.get('title') || '').trim(),
+            category: String(formData.get('category') || ''),
+            icon: String(formData.get('icon') || '✦').trim() || '✦',
+            image
+        };
+
+        if (!item.title || !galleryApi.categories[item.category]) {
+            throw new Error('Enter a title and select a valid gallery section.');
+        }
+
+        const nextItems = currentItem
+            ? galleryItems.map((existing) => existing.id === id ? item : existing)
+            : [item, ...galleryItems];
+
+        if (!galleryApi.saveItems(nextItems)) {
+            throw new Error('The gallery could not be saved in this browser. Remove a large image or use a smaller one and try again.');
+        }
+
+        galleryItems = nextItems;
+        renderGalleryManager();
+        setGalleryMessage(`${item.title} saved. It will appear on the public gallery page in this browser.`);
+        closeGalleryModal();
+    } catch (error) {
+        galleryFormError.textContent = error.message || 'The gallery item could not be saved.';
+    }
+}
+
+if (galleryAddButton) {
+    galleryAddButton.addEventListener('click', () => openGalleryModal());
+}
+
+if (galleryManagerGrid) {
+    galleryManagerGrid.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-gallery-action]');
+        if (!button) {
+            return;
+        }
+
+        const item = galleryItems.find((entry) => entry.id === button.dataset.id);
+        if (!item) {
+            return;
+        }
+
+        if (button.dataset.galleryAction === 'edit') {
+            openGalleryModal(item);
+            return;
+        }
+
+        if (button.dataset.galleryAction === 'delete' && window.confirm(`Delete "${item.title}" from the gallery?`)) {
+            const nextItems = galleryItems.filter((entry) => entry.id !== item.id);
+            if (!galleryApi.saveItems(nextItems)) {
+                setGalleryMessage('The gallery could not be saved in this browser. Try removing a large image first.', true);
+                return;
+            }
+
+            galleryItems = nextItems;
+            renderGalleryManager();
+            setGalleryMessage(`"${item.title}" was deleted from the gallery.`);
+        }
+    });
+}
+
+if (galleryForm) {
+    galleryForm.addEventListener('submit', handleGalleryFormSubmit);
+}
+
+galleryCloseButtons.forEach((button) => button.addEventListener('click', closeGalleryModal));
+
+if (galleryModal) {
+    galleryModal.addEventListener('click', (event) => {
+        if (event.target === galleryModal || event.target.classList.contains('record-modal__backdrop')) {
+            closeGalleryModal();
+        }
+    });
+}
+
+window.addEventListener('storage', (event) => {
+    if (event.key === 'khalid-ibn-walid-gallery' && galleryApi) {
+        galleryItems = galleryApi.loadItems();
+        renderGalleryManager();
+    }
+});
+
 navItems.forEach((item) => {
     item.addEventListener('click', () => {
         navItems.forEach((node) => node.classList.remove('active'));
         item.classList.add('active');
+
+        const targetId = item.dataset.navTarget;
+        if (targetId) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     });
 });
 
 renderRecords();
+renderGalleryManager();

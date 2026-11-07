@@ -1003,6 +1003,30 @@ textarea.form-control {
     transition: var(--transition);
 }
 
+.gallery-placeholder {
+    width: 100%;
+    height: 250px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #0d5c2e 0%, #1a7a42 100%);
+}
+
+.gallery-placeholder.tone-1,
+.gallery-placeholder.tone-3 {
+    background: linear-gradient(135deg, #c9a227 0%, #e8c547 100%);
+}
+
+.gallery-empty {
+    grid-column: 1 / -1;
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-gray);
+    background: var(--bg-white);
+    border-radius: 8px;
+}
+
 .gallery-item:hover img {
     transform: scale(1.1);
 }

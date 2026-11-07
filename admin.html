@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRM Admin | Khalid Ibn Walid Institutes</title>
     <link rel="stylesheet" href="css/style.css?v=crm-2">
-    <link rel="stylesheet" href="css/admin.css?v=crm-2">
+    <link rel="stylesheet" href="css/admin.css?v=gallery-1">
 </head>
 <body class="crm-body">
     <div class="crm-shell">
@@ -42,6 +42,10 @@
                 <button class="nav-item" type="button">
                     <span class="nav-icon">✉</span>
                     Messages
+                </button>
+                <button class="nav-item" type="button" data-nav-target="gallery-management">
+                    <span class="nav-icon">▧</span>
+                    Gallery
                 </button>
                 <button class="nav-item" type="button">
                     <span class="nav-icon">⚙</span>
@@ -247,6 +251,19 @@
                     </ul>
                 </article>
             </section>
+
+            <section class="panel gallery-manager" id="gallery-management" aria-labelledby="gallery-manager-title">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Website content</p>
+                        <h2 id="gallery-manager-title">Gallery management</h2>
+                        <p class="gallery-manager__note">Add, edit, or remove items shown on the public gallery page.</p>
+                    </div>
+                    <button class="action-btn primary" type="button" data-add-gallery-item>+ Add image</button>
+                </div>
+                <p class="gallery-manager__message" data-gallery-message role="status" aria-live="polite"></p>
+                <div class="gallery-manager__grid" data-gallery-manager-grid></div>
+            </section>
         </main>
     </div>
 
@@ -301,6 +318,61 @@
         </div>
     </div>
 
-    <script src="js/admin.js?v=crm-2"></script>
+    <div class="record-modal" data-gallery-modal aria-hidden="true">
+        <div class="record-modal__backdrop" data-close-gallery-modal></div>
+        <div class="record-modal__dialog gallery-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="gallery-form-title">
+            <div class="record-modal__header">
+                <div>
+                    <p class="eyebrow">Website content</p>
+                    <h3 id="gallery-form-title">Add gallery image</h3>
+                </div>
+                <button class="icon-close" type="button" data-close-gallery-modal aria-label="Close form">×</button>
+            </div>
+
+            <form data-gallery-form>
+                <input type="hidden" name="id">
+                <input type="hidden" name="currentImage">
+                <div class="form-grid">
+                    <label class="full-width">
+                        <span>Title / caption</span>
+                        <input type="text" name="title" maxlength="100" required>
+                    </label>
+                    <label>
+                        <span>Gallery section</span>
+                        <select name="category" required>
+                            <option value="campus">Campus Life</option>
+                            <option value="activities">Student Activities</option>
+                            <option value="events">Events & Celebrations</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Placeholder icon (when no photo)</span>
+                        <input type="text" name="icon" maxlength="8" value="✦">
+                    </label>
+                    <label class="full-width">
+                        <span>Image URL (optional)</span>
+                        <input type="url" name="imageUrl" placeholder="https://example.com/photo.jpg">
+                    </label>
+                    <label class="full-width">
+                        <span>Or upload a photo</span>
+                        <input type="file" name="imageFile" accept="image/*">
+                    </label>
+                    <label class="full-width gallery-remove-image">
+                        <input type="checkbox" name="removeImage">
+                        <span>Remove the current photo and show the placeholder icon</span>
+                    </label>
+                </div>
+                <p class="gallery-modal__help">Uploaded photos are resized for browser storage. Keep images under 4 MB.</p>
+                <p class="gallery-modal__error" data-gallery-form-error role="alert"></p>
+                <div class="form-actions">
+                    <button class="action-btn" type="button" data-close-gallery-modal>Cancel</button>
+                    <button class="action-btn primary" type="submit">Save gallery item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/gallery.js?v=gallery-1"></script>
+    <script src="js/admin.js?v=gallery-1"></script>
 </body>
 </html>
