@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Admin | Khalid Ibn Walid Institutes</title>
+    <link rel="stylesheet" href="css/style.css?v=crm-2">
+    <link rel="stylesheet" href="css/admin.css?v=crm-2">
+</head>
+<body class="crm-body">
+    <div class="crm-shell">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-mark" aria-label="Khalid Ibn Walid Institutes logo"></span>
+                <div>
+                    <strong>Khalid Ibn Walid</strong>
+                    <small>Institutes CRM</small>
+                </div>
+            </div>
+
+            <nav class="side-nav" aria-label="CRM navigation">
+                <button class="nav-item active" type="button">
+                    <span class="nav-icon">▣</span>
+                    Overview
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">◫</span>
+                    Students
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">◎</span>
+                    Admissions
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">◇</span>
+                    Finance
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">✦</span>
+                    Donors
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">✉</span>
+                    Messages
+                </button>
+                <button class="nav-item" type="button">
+                    <span class="nav-icon">⚙</span>
+                    Settings
+                </button>
+            </nav>
+
+            <div class="sidebar-panel">
+                <p class="panel-label">Today</p>
+                <h4>Admission goal</h4>
+                <div class="mini-progress">
+                    <span style="width: 72%"></span>
+                </div>
+                <p class="panel-metric">72% of target reached</p>
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Operations dashboard</p>
+                    <h1>System Control Center</h1>
+                </div>
+
+                <div class="topbar-actions">
+                    <label class="search-box" aria-label="Search records">
+                        <span>⌕</span>
+                        <input type="search" data-search placeholder="Search records...">
+                    </label>
+                    <label class="filter-box" aria-label="Filter by status">
+                        <span>Filter</span>
+                        <select data-status-filter>
+                            <option value="all">All status</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Application">Application</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Active">Active</option>
+                        </select>
+                    </label>
+                    <button class="action-btn primary" type="button" data-add-record>+ Add Student</button>
+                    <button class="action-btn" type="button">Export</button>
+                </div>
+            </header>
+
+            <section class="kpi-strip" aria-label="Institution overview counters">
+                <article class="kpi-card">
+                    <div class="kpi-icon">👥</div>
+                    <div class="kpi-value">500+</div>
+                    <div class="kpi-label">Active Members</div>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-icon">🗓</div>
+                    <div class="kpi-value">50+</div>
+                    <div class="kpi-label">Events Yearly</div>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-icon">★</div>
+                    <div class="kpi-value">15+</div>
+                    <div class="kpi-label">Years Active</div>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-icon">📖</div>
+                    <div class="kpi-value">20+</div>
+                    <div class="kpi-label">Programs</div>
+                </article>
+            </section>
+
+            <section class="stats-grid" aria-label="Key metrics">
+                <article class="stat-card accent-green">
+                    <div>
+                        <p>Total Students</p>
+                        <h3>1,284</h3>
+                    </div>
+                    <span class="badge positive">+12.4%</span>
+                </article>
+                <article class="stat-card accent-gold">
+                    <div>
+                        <p>New Admissions</p>
+                        <h3>184</h3>
+                    </div>
+                    <span class="badge positive">+9.1%</span>
+                </article>
+                <article class="stat-card accent-teal">
+                    <div>
+                        <p>Pending Fees</p>
+                        <h3>GHS 64,400</h3>
+                    </div>
+                    <span class="badge warning">18 due</span>
+                </article>
+                <article class="stat-card accent-slate">
+                    <div>
+                        <p>Active Donors</p>
+                        <h3>96</h3>
+                    </div>
+                    <span class="badge positive">+6</span>
+                </article>
+            </section>
+
+            <section class="panel-grid">
+                <article class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">Progress</p>
+                            <h2>Enrollment pipeline</h2>
+                        </div>
+                        <span class="chip">This term</span>
+                    </div>
+
+                    <div class="pipeline-list">
+                        <div class="pipeline-item">
+                            <div>
+                                <strong>Inquiry</strong>
+                                <small>186 leads</small>
+                            </div>
+                            <div class="progress-bar"><span style="width: 88%"></span></div>
+                        </div>
+                        <div class="pipeline-item">
+                            <div>
+                                <strong>Application</strong>
+                                <small>124 files reviewed</small>
+                            </div>
+                            <div class="progress-bar"><span style="width: 72%"></span></div>
+                        </div>
+                        <div class="pipeline-item">
+                            <div>
+                                <strong>Interview</strong>
+                                <small>61 scheduled</small>
+                            </div>
+                            <div class="progress-bar"><span style="width: 54%"></span></div>
+                        </div>
+                        <div class="pipeline-item">
+                            <div>
+                                <strong>Enrollment</strong>
+                                <small>43 accepted</small>
+                            </div>
+                            <div class="progress-bar"><span style="width: 32%"></span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel chart-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">Performance</p>
+                            <h2>Revenue overview</h2>
+                        </div>
+                        <span class="chip success">+18.2%</span>
+                    </div>
+
+                    <div class="bar-chart" aria-label="Monthly revenue chart">
+                        <div class="bar-group"><span class="bar" style="height: 38%"></span><label>Jan</label></div>
+                        <div class="bar-group"><span class="bar" style="height: 54%"></span><label>Feb</label></div>
+                        <div class="bar-group"><span class="bar" style="height: 62%"></span><label>Mar</label></div>
+                        <div class="bar-group"><span class="bar" style="height: 48%"></span><label>Apr</label></div>
+                        <div class="bar-group"><span class="bar" style="height: 76%"></span><label>May</label></div>
+                        <div class="bar-group"><span class="bar" style="height: 88%"></span><label>Jun</label></div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="bottom-grid">
+                <article class="panel table-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">CRM</p>
+                            <h2>Applicant records</h2>
+                        </div>
+                        <button class="link-btn" type="button">View all</button>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Program</th>
+                                    <th>Status</th>
+                                    <th>Fee</th>
+                                    <th>Owner</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody data-table-body></tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="panel quick-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">Actions</p>
+                            <h2>Quick controls</h2>
+                        </div>
+                    </div>
+
+                    <ul class="action-list">
+                        <li><span>✔</span> Approve new admissions</li>
+                        <li><span>✦</span> Review donor pledges</li>
+                        <li><span>☰</span> Send fee reminder</li>
+                        <li><span>☼</span> Publish notice board</li>
+                        <li><span>⚑</span> Assign staff to intake</li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <div class="record-modal" data-record-modal aria-hidden="true">
+        <div class="record-modal__backdrop" data-close-modal></div>
+        <div class="record-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="record-form-title">
+            <div class="record-modal__header">
+                <div>
+                    <p class="eyebrow">Record update</p>
+                    <h3 id="record-form-title">Manage applicant</h3>
+                </div>
+                <button class="icon-close" type="button" data-close-modal aria-label="Close form">×</button>
+            </div>
+
+            <form data-record-form>
+                <input type="hidden" name="id" data-record-id>
+
+                <div class="form-grid">
+                    <label>
+                        <span>Student name</span>
+                        <input type="text" name="name" required>
+                    </label>
+                    <label>
+                        <span>Program</span>
+                        <input type="text" name="program" required>
+                    </label>
+                    <label>
+                        <span>Status</span>
+                        <select name="status" required>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Application">Application</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Active">Active</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Fee</span>
+                        <input type="number" name="fee" min="0" step="100" required>
+                    </label>
+                    <label class="full-width">
+                        <span>Owner</span>
+                        <input type="text" name="owner" required>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button class="action-btn" type="button" data-close-modal>Cancel</button>
+                    <button class="action-btn primary" type="submit">Save record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js?v=crm-2"></script>
+</body>
+</html>

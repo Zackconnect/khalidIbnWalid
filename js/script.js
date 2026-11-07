@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormHandling();
     initAnimations();
     initHeroTextFlipper();
+    initStatsCounter();
 });
 
 // ============================================
@@ -383,6 +384,62 @@ function initQurbaniCalculator() {
 
 // Initialize calculator when DOM is ready
 document.addEventListener('DOMContentLoaded', initQurbaniCalculator);
+
+// ============================================
+// HERO TEXT FLIPPER ANIMATION
+// ============================================
+function initStatsCounter() {
+    const counters = document.querySelectorAll('.stat-number[data-count]');
+    if (!counters.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const statsSection = document.querySelector('.stats-band');
+
+    function setValue(counter, value) {
+        const suffix = counter.dataset.suffix || '';
+        counter.textContent = `${value.toLocaleString()}${suffix}`;
+    }
+
+    function animateCounters() {
+        counters.forEach(counter => {
+            const target = Number(counter.dataset.count);
+            const duration = 1600;
+            const startTime = performance.now();
+
+            function updateCounter(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                const value = Math.floor(target * easedProgress);
+                setValue(counter, value);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    setValue(counter, target);
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        });
+    }
+
+    function showFinalValues() {
+        counters.forEach(counter => setValue(counter, Number(counter.dataset.count)));
+    }
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window) || !statsSection) {
+        showFinalValues();
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        animateCounters();
+    }, { threshold: 0.1 });
+
+    observer.observe(statsSection);
+}
 
 // ============================================
 // HERO TEXT FLIPPER ANIMATION
