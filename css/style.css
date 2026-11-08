@@ -79,6 +79,11 @@ body.rtl .navbar-link {
     text-align: right;
 }
 
+body.rtl .navbar-link[href="donations.html"] {
+    margin-left: 0;
+    margin-right: 0.35rem;
+}
+
 body.rtl .language-switcher {
     margin-left: 0;
     margin-right: 1rem;
@@ -213,20 +218,30 @@ a:hover {
    NAVIGATION BAR
    ============================================ */
 .navbar {
-    background-color: var(--primary-green);
-    box-shadow: var(--shadow-md);
+    background: #1d3449;
+    box-shadow: 0 8px 24px rgba(8, 24, 38, 0.16);
     position: sticky;
     top: 0;
     z-index: 1000;
+    padding: 14px 0;
 }
 
 .navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 20px;
-    max-width: 1200px;
+    gap: 1rem;
+    padding: 0.7rem 24px;
+    width: calc(100% - 32px);
+    max-width: 1400px;
+    min-height: 82px;
     margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 30px rgba(8, 24, 38, 0.16);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
 }
 
 .language-switcher {
@@ -261,10 +276,13 @@ a:hover {
 .navbar-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     color: var(--text-light);
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .navbar-brand img {
@@ -274,8 +292,11 @@ a:hover {
 
 .navbar-menu {
     display: flex;
+    align-items: center;
+    justify-content: center;
     list-style: none;
-    gap: 0;
+    gap: 0.15rem;
+    flex: 1;
 }
 
 .navbar-item {
@@ -284,17 +305,34 @@ a:hover {
 
 .navbar-link {
     display: block;
-    padding: 1rem 1.25rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 999px;
     color: var(--text-light);
-    font-weight: 500;
+    font-size: 0.92rem;
+    font-weight: 650;
+    white-space: nowrap;
     transition: var(--transition);
     cursor: pointer;
 }
 
 .navbar-link:hover,
 .navbar-link.active {
-    background-color: var(--primary-green-dark);
-    color: var(--accent-gold);
+    background-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.navbar-link[href="donations.html"] {
+    margin-left: 0.35rem;
+    padding: 0.72rem 1.1rem;
+    background: #ffbd24;
+    color: #182b36;
+    box-shadow: 0 5px 14px rgba(255, 189, 36, 0.2);
+}
+
+.navbar-link[href="donations.html"]:hover,
+.navbar-link[href="donations.html"].active {
+    background: #ffd05c;
+    color: #182b36;
 }
 
 /* Dropdown Menu */
@@ -360,6 +398,10 @@ a:hover {
     gap: 5px;
     cursor: pointer;
     padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .mobile-menu-toggle span {
@@ -1335,19 +1377,36 @@ textarea.form-control {
    RESPONSIVE DESIGN
    ============================================ */
 @media (max-width: 992px) {
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .navbar-container {
+        min-height: 70px;
+    }
+
     .navbar-menu {
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--primary-green-dark);
+        top: calc(100% + 10px);
+        left: 16px;
+        right: 16px;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 18px;
+        background: rgba(20, 45, 59, 0.97);
         box-shadow: var(--shadow-lg);
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
     }
 
     .navbar-menu.active {
         display: flex;
+    }
+
+    body.rtl .navbar-menu {
+        flex-direction: column;
     }
 
     .navbar-item {
@@ -1355,7 +1414,14 @@ textarea.form-control {
     }
 
     .navbar-link {
-        padding: 1rem 1.5rem;
+        width: 100%;
+        padding: 0.85rem 1rem;
+        text-align: left;
+    }
+
+    .navbar-link[href="donations.html"] {
+        margin: 0.25rem 0 0;
+        text-align: center;
     }
 
     .dropdown-menu {
