@@ -351,8 +351,8 @@ function initDropdowns() {
         
         if (toggle) {
             toggle.addEventListener('click', function(e) {
-                // Only prevent default on mobile
-                if (window.innerWidth <= 992) {
+                // Use tap-to-open dropdowns while the navigation is collapsed.
+                if (window.innerWidth <= 1200) {
                     e.preventDefault();
                     dropdown.classList.toggle('active');
                 }
