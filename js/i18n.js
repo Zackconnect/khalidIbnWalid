@@ -1088,7 +1088,10 @@
         const leading = original.match(/^\s*/)[0];
         const trailing = original.match(/\s*$/)[0];
         const core = original.trim();
-        node.textContent = language === 'ar' ? `${leading}${translate(core)}${trailing}` : original;
+        const nextText = language === 'ar' ? `${leading}${translate(core)}${trailing}` : original;
+        if (node.textContent !== nextText) {
+            node.textContent = nextText;
+        }
     }
 
     function translateAttributes(element) {
@@ -1109,7 +1112,10 @@
                 sources[name] = element.getAttribute(name);
             }
             const original = sources[name];
-            element.setAttribute(name, language === 'ar' ? translate(original) : original);
+            const nextValue = language === 'ar' ? translate(original) : original;
+            if (element.getAttribute(name) !== nextValue) {
+                element.setAttribute(name, nextValue);
+            }
         });
         if (element.matches('input[type="submit"], input[type="button"]')) {
             let sources = attributeSources.get(element);
@@ -1120,7 +1126,10 @@
             if (!('value' in sources)) {
                 sources.value = element.value;
             }
-            element.value = language === 'ar' ? translate(sources.value) : sources.value;
+            const nextValue = language === 'ar' ? translate(sources.value) : sources.value;
+            if (element.value !== nextValue) {
+                element.value = nextValue;
+            }
         }
     }
 
