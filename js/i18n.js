@@ -1090,7 +1090,7 @@
         const core = original.trim();
         const nextText = language === 'ar' ? `${leading}${translate(core)}${trailing}` : original;
         if (node.textContent !== nextText) {
-            node.textContent = nextText;
+            node.data = nextText;
         }
     }
 
