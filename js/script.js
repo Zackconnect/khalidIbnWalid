@@ -352,7 +352,7 @@ function initDropdowns() {
         if (toggle) {
             toggle.addEventListener('click', function(e) {
                 // Use tap-to-open dropdowns while the navigation is collapsed.
-                if (window.innerWidth <= 1200) {
+                if (window.innerWidth <= 1400) {
                     if (!dropdown.classList.contains('active')) {
                         e.preventDefault();
                         dropdown.classList.add('active');

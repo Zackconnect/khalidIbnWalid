@@ -1376,7 +1376,7 @@ textarea.form-control {
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .navbar {
         padding: 10px 0;
     }
