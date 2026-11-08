@@ -40,6 +40,67 @@ body {
     background-color: var(--bg-white);
 }
 
+body.rtl {
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, 'Segoe UI', sans-serif;
+}
+
+body.rtl .navbar-brand,
+body.rtl .navbar-menu,
+body.rtl .navbar-container,
+body.rtl .breadcrumb-list,
+body.rtl .navbar-item {
+    direction: rtl;
+}
+
+body.rtl .navbar-container {
+    flex-direction: row-reverse;
+}
+
+body.rtl .navbar-brand {
+    flex-direction: row-reverse;
+}
+
+body.rtl .navbar-menu {
+    flex-direction: row-reverse;
+}
+
+body.rtl .lang-btn {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body.rtl .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+body.rtl .navbar-link {
+    text-align: right;
+}
+
+body.rtl .language-switcher {
+    margin-left: 0;
+    margin-right: 1rem;
+}
+
+body.rtl input:not([type="email"]):not([type="tel"]):not([type="url"]),
+body.rtl textarea,
+body.rtl select {
+    text-align: right;
+}
+
+body.rtl input[type="email"],
+body.rtl input[type="tel"],
+body.rtl input[type="url"] {
+    direction: ltr;
+    text-align: left;
+}
+
+body.rtl .table {
+    direction: rtl;
+}
+
 #preloader {
     position: fixed;
     inset: 0;
@@ -166,6 +227,35 @@ a:hover {
     padding: 1rem 20px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    padding: 0.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn {
+    border: none;
+    background: transparent;
+    color: #fff;
+    padding: 0.42rem 0.7rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    transition: all 0.2s ease;
+}
+
+.lang-btn.active {
+    background: var(--accent-gold);
+    color: var(--primary-green-dark);
 }
 
 .navbar-brand {

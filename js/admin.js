@@ -390,7 +390,8 @@ if (tableBody) {
         }
 
         if (button.dataset.action === 'delete') {
-            const confirmed = window.confirm(`Delete ${record.name} from the applicant list?`);
+            const confirmation = `Delete ${record.name} from the applicant list?`;
+            const confirmed = window.confirm(window.KWTranslate ? window.KWTranslate(confirmation) : confirmation);
             if (!confirmed) {
                 return;
             }
@@ -613,7 +614,8 @@ if (galleryManagerGrid) {
             return;
         }
 
-        if (button.dataset.galleryAction === 'delete' && window.confirm(`Delete "${item.title}" from the gallery?`)) {
+        const confirmation = `Delete "${item.title}" from the gallery?`;
+        if (button.dataset.galleryAction === 'delete' && window.confirm(window.KWTranslate ? window.KWTranslate(confirmation) : confirmation)) {
             const nextItems = galleryItems.filter((entry) => entry.id !== item.id);
             if (!galleryApi.saveItems(nextItems)) {
                 setGalleryMessage('The gallery could not be saved in this browser. Try removing a large image first.', true);
@@ -693,7 +695,9 @@ if (submissionsBody) {
         }
 
         if (button.dataset.submissionAction === 'delete'
-            && window.confirm(`Delete this ${submissionTypeLabel(submission.type).toLowerCase()} from the inbox?`)) {
+            && window.confirm(window.KWTranslate
+                ? window.KWTranslate(`Delete this ${submissionTypeLabel(submission.type).toLowerCase()} from the inbox?`)
+                : `Delete this ${submissionTypeLabel(submission.type).toLowerCase()} from the inbox?`)) {
             const previousSubmissions = submissions;
             submissions = submissions.filter((item) => item.id !== submission.id);
             if (!persistSubmissions()) {

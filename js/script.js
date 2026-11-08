@@ -3,6 +3,294 @@
 // Ghana Islamic Educational Institution
 // ============================================
 
+const SITE_LANGUAGE_KEY = 'khalid-site-language';
+const SITE_TRANSLATIONS = {
+    en: {
+        "Home": "Home",
+        "About Us": "About Us",
+        "Academics": "Academics",
+        "Admissions": "Admissions",
+        "Donations": "Donations",
+        "General Donations": "General Donations",
+        "Zakat": "Zakat",
+        "Eid Sacrifice": "Eid Sacrifice",
+        "Gallery": "Gallery",
+        "News": "News",
+        "Contact": "Contact",
+        "CRM Admin": "CRM Admin",
+        "Arabic Studies": "Arabic Studies",
+        "Islamic Studies": "Islamic Studies",
+        "Makaranta": "Makaranta",
+        "Kindergarten": "Kindergarten",
+        "Primary School": "Primary School",
+        "Junior High School": "Junior High School",
+        "Senior High School": "Senior High School",
+        "Our Academic Programmes": "Our Academic Programmes",
+        "Welcome to Our Institution": "Welcome to Our Institution",
+        "Read Our Full Story": "Read Our Full Story",
+        "Explore Programmes": "Explore Programmes",
+        "Learn More": "Learn More",
+        "Discover More": "Discover More",
+        "ACTIVE MEMBERS": "ACTIVE MEMBERS",
+        "EVENTS YEARLY": "EVENTS YEARLY",
+        "YEARS ACTIVE": "YEARS ACTIVE",
+        "PROGRAMS": "PROGRAMS",
+        "Get In Touch": "Get In Touch",
+        "Contact Us": "Contact Us",
+        "Send Us a Message": "Send Us a Message",
+        "Visit Us": "Visit Us",
+        "Call Us": "Call Us",
+        "Email Us": "Email Us",
+        "Office Hours": "Office Hours",
+        "Apply Now": "Apply Now",
+        "Register Now": "Register Now",
+        "Submit": "Submit",
+        "Full Name *": "Full Name *",
+        "Email Address *": "Email Address *",
+        "Phone Number": "Phone Number",
+        "Subject *": "Subject *",
+        "Message *": "Message *",
+        "Select Subject": "Select Subject",
+        "Admissions Inquiry": "Admissions Inquiry",
+        "Donations & Zakat": "Donations & Zakat",
+        "Eid al-Adha Layyah": "Eid al-Adha Layyah",
+        "General Inquiry": "General Inquiry",
+        "Feedback": "Feedback",
+        "Other": "Other",
+        "Send Message": "Send Message",
+        "Our Mission & Vision": "Our Mission & Vision",
+        "Our Mission": "Our Mission",
+        "Our Vision": "Our Vision",
+        "Our Story": "Our Story",
+        "Our Core Values": "Our Core Values",
+        "Knowledge": "Knowledge",
+        "Character": "Character",
+        "Faith": "Faith",
+        "Excellence": "Excellence",
+        "Khalid Ibn Walid Institutes | Ghana Islamic Educational Institution": "Khalid Ibn Walid Institutes | Ghana Islamic Educational Institution",
+        "Khalid Ibn Walid Institutes": "Khalid Ibn Walid Institutes",
+        "Academic Programmes | Khalid Ibn Walid Institutes": "Academic Programmes | Khalid Ibn Walid Institutes",
+        "About Us | Khalid Ibn Walid Institutes": "About Us | Khalid Ibn Walid Institutes",
+        "Contact Us | Khalid Ibn Walid Institutes": "Contact Us | Khalid Ibn Walid Institutes",
+        "Arabic Studies | Khalid Ibn Walid Institutes": "Arabic Studies | Khalid Ibn Walid Institutes",
+        "Admissions | Khalid Ibn Walid Institutes": "Admissions | Khalid Ibn Walid Institutes",
+        "Donations | Khalid Ibn Walid Institutes": "Donations | Khalid Ibn Walid Institutes",
+        "Gallery | Khalid Ibn Walid Institutes": "Gallery | Khalid Ibn Walid Institutes",
+        "News | Khalid Ibn Walid Institutes": "News | Khalid Ibn Walid Institutes"
+    },
+    ar: {
+        "Home": "الرئيسية",
+        "About Us": "معلومات عنا",
+        "Academics": "الأكاديميات",
+        "Admissions": "القبول",
+        "Donations": "التبرعات",
+        "General Donations": "التبرعات العامة",
+        "Zakat": "الزكاة",
+        "Eid Sacrifice": "أضحية العيد",
+        "Gallery": "المعرض",
+        "News": "الأخبار",
+        "Contact": "اتصل بنا",
+        "CRM Admin": "إدارة CRM",
+        "Arabic Studies": "دراسات اللغة العربية",
+        "Islamic Studies": "الدراسات الإسلامية",
+        "Makaranta": "المكارنتا",
+        "Kindergarten": "روضة الأطفال",
+        "Primary School": "المدرسة الإبتدائية",
+        "Junior High School": "المرحلة الإعدادية",
+        "Senior High School": "المرحلة الثانوية",
+        "Our Academic Programmes": "برامجنا الأكاديمية",
+        "Welcome to Our Institution": "مرحباً بكم في مؤسستنا",
+        "Read Our Full Story": "اقرأ قصتنا كاملة",
+        "Explore Programmes": "استكشف البرامج",
+        "Learn More": "اعرف المزيد",
+        "Discover More": "اكتشف المزيد",
+        "ACTIVE MEMBERS": "الأعضاء النشطون",
+        "EVENTS YEARLY": "الأحداث سنوياً",
+        "YEARS ACTIVE": "سنوات النشاط",
+        "PROGRAMS": "البرامج",
+        "Get In Touch": "تواصل معنا",
+        "Contact Us": "اتصل بنا",
+        "Send Us a Message": "أرسل لنا رسالة",
+        "Visit Us": "زورنا",
+        "Call Us": "اتصل بنا",
+        "Email Us": "راسلنا",
+        "Office Hours": "ساعات العمل",
+        "Apply Now": "قدم الآن",
+        "Register Now": "سجل الآن",
+        "Submit": "إرسال",
+        "Full Name *": "الاسم الكامل *",
+        "Email Address *": "البريد الإلكتروني *",
+        "Phone Number": "رقم الهاتف",
+        "Subject *": "الموضوع *",
+        "Message *": "الرسالة *",
+        "Select Subject": "اختر الموضوع",
+        "Admissions Inquiry": "استفسار القبول",
+        "Donations & Zakat": "التبرعات والزكاة",
+        "Eid al-Adha Layyah": "ضحايا عيد الأضحى",
+        "General Inquiry": "استفسار عام",
+        "Feedback": "ملاحظات",
+        "Other": "أخرى",
+        "Send Message": "إرسال الرسالة",
+        "Our Mission & Vision": "مهمتنا ورؤيتنا",
+        "Our Mission": "مهمتنا",
+        "Our Vision": "رؤيتنا",
+        "Our Story": "قصتنا",
+        "Our Core Values": "قيمنا الأساسية",
+        "Knowledge": "العلم",
+        "Character": "الشخصية",
+        "Faith": "الإيمان",
+        "Excellence": "التميز",
+        "Khalid Ibn Walid Institutes | Ghana Islamic Educational Institution": "معاهد خالد بن الوليد | مؤسسة تعليمية إسلامية في غانا",
+        "Khalid Ibn Walid Institutes": "معاهد خالد بن الوليد",
+        "Academic Programmes | Khalid Ibn Walid Institutes": "البرامج الأكاديمية | معاهد خالد بن الوليد",
+        "About Us | Khalid Ibn Walid Institutes": "معلومات عنا | معاهد خالد بن الوليد",
+        "Contact Us | Khalid Ibn Walid Institutes": "اتصل بنا | معاهد خالد بن الوليد",
+        "Arabic Studies | Khalid Ibn Walid Institutes": "دراسات اللغة العربية | معاهد خالد بن الوليد",
+        "Admissions | Khalid Ibn Walid Institutes": "القبول | معاهد خالد بن الوليد",
+        "Donations | Khalid Ibn Walid Institutes": "التبرعات | معاهد خالد بن الوليد",
+        "Gallery | Khalid Ibn Walid Institutes": "المعرض | معاهد خالد بن الوليد",
+        "News | Khalid Ibn Walid Institutes": "الأخبار | معاهد خالد بن الوليد"
+    }
+};
+
+function getDefaultLanguage() {
+    const saved = window.localStorage.getItem(SITE_LANGUAGE_KEY);
+    if (saved === 'ar' || saved === 'en') {
+        return saved;
+    }
+    return 'en';
+}
+
+function injectLanguageSwitcher() {
+    const navbarContainer = document.querySelector('.navbar-container');
+    if (!navbarContainer || navbarContainer.querySelector('.language-switcher')) {
+        return;
+    }
+
+    const switcher = document.createElement('div');
+    switcher.className = 'language-switcher';
+    switcher.setAttribute('aria-label', 'Language switcher');
+    switcher.innerHTML = `
+        <button type="button" class="lang-btn active" data-lang="en" aria-label="Switch to English">EN</button>
+        <button type="button" class="lang-btn" data-lang="ar" aria-label="Switch to Arabic">AR</button>
+    `;
+    navbarContainer.appendChild(switcher);
+
+    switcher.querySelectorAll('.lang-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            applySiteLanguage(this.dataset.lang);
+        });
+    });
+}
+
+function applySiteLanguage(language) {
+    const normalized = language === 'ar' ? 'ar' : 'en';
+    window.localStorage.setItem(SITE_LANGUAGE_KEY, normalized);
+    document.documentElement.lang = normalized;
+    document.body.classList.toggle('rtl', normalized === 'ar');
+    document.body.setAttribute('data-language', normalized);
+    document.body.dir = normalized === 'ar' ? 'rtl' : 'ltr';
+
+    const switcher = document.querySelector('.language-switcher');
+    if (switcher) {
+        switcher.querySelectorAll('.lang-btn').forEach(button => {
+            const isActive = button.dataset.lang === normalized;
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    }
+
+    const pageName = window.location.pathname.split('/').pop() || 'index.html';
+    const pageTitleMap = {
+        'index.html': {
+            en: 'Khalid Ibn Walid Institutes | Ghana Islamic Educational Institution',
+            ar: 'معاهد خالد بن الوليد | مؤسسة تعليمية إسلامية في غانا'
+        },
+        'about.html': {
+            en: 'About Us | Khalid Ibn Walid Institutes',
+            ar: 'معلومات عنا | معاهد خالد بن الوليد'
+        },
+        'academics.html': {
+            en: 'Academic Programmes | Khalid Ibn Walid Institutes',
+            ar: 'البرامج الأكاديمية | معاهد خالد بن الوليد'
+        },
+        'admissions.html': {
+            en: 'Admissions | Khalid Ibn Walid Institutes',
+            ar: 'القبول | معاهد خالد بن الوليد'
+        },
+        'donations.html': {
+            en: 'Donations | Khalid Ibn Walid Institutes',
+            ar: 'التبرعات | معاهد خالد بن الوليد'
+        },
+        'gallery.html': {
+            en: 'Gallery | Khalid Ibn Walid Institutes',
+            ar: 'المعرض | معاهد خالد بن الوليد'
+        },
+        'news.html': {
+            en: 'News | Khalid Ibn Walid Institutes',
+            ar: 'الأخبار | معاهد خالد بن الوليد'
+        },
+        'contact.html': {
+            en: 'Contact Us | Khalid Ibn Walid Institutes',
+            ar: 'اتصل بنا | معاهد خالد بن الوليد'
+        },
+        'arabic.html': {
+            en: 'Arabic Studies | Khalid Ibn Walid Institutes',
+            ar: 'دراسات اللغة العربية | معاهد خالد بن الوليد'
+        }
+    };
+
+    const pageTitle = pageTitleMap[pageName] || { en: document.title, ar: document.title };
+    document.title = pageTitle[normalized] || document.title;
+
+    const textMap = SITE_TRANSLATIONS[normalized];
+    const textNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    while (textNodes.nextNode()) {
+        const node = textNodes.currentNode;
+        const parent = node.parentElement;
+        if (!parent || parent.closest('script, style, noscript') || !node.textContent || !node.textContent.trim()) {
+            continue;
+        }
+
+        const text = node.textContent.trim();
+        if (!node.parentElement.dataset.originalText) {
+            node.parentElement.dataset.originalText = text;
+        }
+
+        const originalText = node.parentElement.dataset.originalText || text;
+        const nextText = textMap[originalText] || originalText;
+        node.textContent = nextText;
+    }
+
+    document.querySelectorAll('[placeholder], [aria-label], [title]').forEach(element => {
+        const key = element.getAttribute('placeholder') || element.getAttribute('aria-label') || element.getAttribute('title');
+        if (!key) {
+            return;
+        }
+        if (!element.dataset.originalText) {
+            element.dataset.originalText = key;
+        }
+        const originalKey = element.dataset.originalText || key;
+        const nextValue = textMap[originalKey] || originalKey;
+        element.setAttribute('placeholder', nextValue);
+        element.setAttribute('aria-label', nextValue);
+        element.setAttribute('title', nextValue);
+    });
+
+    document.querySelectorAll('option').forEach(option => {
+        const key = option.textContent.trim();
+        if (!key) {
+            return;
+        }
+        if (!option.dataset.originalText) {
+            option.dataset.originalText = key;
+        }
+        const originalKey = option.dataset.originalText || key;
+        const nextValue = textMap[originalKey] || originalKey;
+        option.textContent = nextValue;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initMobileMenu();
@@ -294,6 +582,10 @@ function calculateQurbaniTotal(animalType, quantity) {
 // NOTIFICATION SYSTEM
 // ============================================
 function showNotification(message, type = 'info') {
+    if (window.KWTranslate) {
+        message = window.KWTranslate(message);
+    }
+
     // Remove existing notification
     const existing = document.querySelector('.notification');
     if (existing) {
