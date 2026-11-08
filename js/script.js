@@ -353,8 +353,10 @@ function initDropdowns() {
             toggle.addEventListener('click', function(e) {
                 // Use tap-to-open dropdowns while the navigation is collapsed.
                 if (window.innerWidth <= 1200) {
-                    e.preventDefault();
-                    dropdown.classList.toggle('active');
+                    if (!dropdown.classList.contains('active')) {
+                        e.preventDefault();
+                        dropdown.classList.add('active');
+                    }
                 }
             });
         }
