@@ -300,7 +300,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormHandling();
     initAnimations();
     initHeroTextFlipper();
-    initHeroBackgroundFlipper();
     initStatsCounter();
 });
 
@@ -793,7 +792,7 @@ function initStatsCounter() {
 // ============================================
 function initHeroTextFlipper() {
     const quoteSlides = document.querySelectorAll('.hero-quote-slide');
-    if (quoteSlides.length < 2) return;
+    if (quoteSlides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let currentIndex = 0;
     const flipInterval = 5000;
@@ -801,32 +800,15 @@ function initHeroTextFlipper() {
     function flipText() {
         const currentSlide = quoteSlides[currentIndex];
         currentSlide.classList.remove('active');
-        currentSlide.classList.add('exit');
         currentSlide.setAttribute('aria-hidden', 'true');
 
         const nextIndex = (currentIndex + 1) % quoteSlides.length;
-        setTimeout(() => {
-            currentSlide.classList.remove('exit');
-            quoteSlides[nextIndex].classList.add('active');
-            quoteSlides[nextIndex].setAttribute('aria-hidden', 'false');
-            currentIndex = nextIndex;
-        }, 400);
+        quoteSlides[nextIndex].classList.add('active');
+        quoteSlides[nextIndex].setAttribute('aria-hidden', 'false');
+        currentIndex = nextIndex;
     }
 
     setInterval(flipText, flipInterval);
-}
-
-function initHeroBackgroundFlipper() {
-    const slides = document.querySelectorAll('.hero-background-slide');
-    if (slides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let currentIndex = 0;
-
-    setInterval(() => {
-        slides[currentIndex].classList.remove('active');
-        currentIndex = (currentIndex + 1) % slides.length;
-        slides[currentIndex].classList.add('active');
-    }, 6500);
 }
 
 // ============================================
