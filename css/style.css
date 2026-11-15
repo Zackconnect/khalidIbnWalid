@@ -218,8 +218,8 @@ a:hover {
    NAVIGATION BAR
    ============================================ */
 .navbar {
-    background: transparent;
-    box-shadow: none;
+    background: rgba(29, 52, 73, 0.94);
+    box-shadow: 0 8px 24px rgba(8, 24, 38, 0.16);
     position: sticky;
     top: 0;
     z-index: 1000;
