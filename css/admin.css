@@ -776,6 +776,51 @@ tbody tr:hover {
     color: #a11f1f;
 }
 
+.founder-media-form {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(240px, 1.5fr) auto;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.founder-media-form label {
+    display: grid;
+    gap: 7px;
+    color: var(--crm-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.founder-media-form input {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--crm-border);
+    border-radius: 10px;
+    color: var(--crm-text);
+    font: inherit;
+}
+
+.gallery-admin-card__image img,
+.gallery-admin-card__image video,
+.founder-media-grid .gallery-item img,
+.founder-media-grid .gallery-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.founder-media-grid .gallery-item video {
+    display: block;
+    height: 250px;
+    background: #111;
+}
+
+.founder-media-grid .gallery-caption {
+    transform: none;
+}
+
 .gallery-manager__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -1009,6 +1054,10 @@ tbody tr:hover {
 
     .gallery-manager__grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
+    .founder-media-form {
+        grid-template-columns: 1fr;
     }
 
     .submissions-panel__header,

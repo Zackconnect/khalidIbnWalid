@@ -47,6 +47,10 @@
                     <span class="nav-icon">▧</span>
                     Gallery
                 </button>
+                <button class="nav-item" type="button" data-nav-target="founder-media-management">
+                    <span class="nav-icon">✦</span>
+                    Founder media
+                </button>
                 <button class="nav-item" type="button">
                     <span class="nav-icon">⚙</span>
                     Settings
@@ -305,6 +309,31 @@
                 <p class="gallery-manager__message" data-gallery-message role="status" aria-live="polite"></p>
                 <div class="gallery-manager__grid" data-gallery-manager-grid></div>
             </section>
+
+            <section class="panel gallery-manager" id="founder-media-management" aria-labelledby="founder-media-title">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Website content</p>
+                        <h2 id="founder-media-title">Founder photos & videos</h2>
+                        <p class="gallery-manager__note">Upload media to display on the public Founder page.</p>
+                    </div>
+                </div>
+                <form class="founder-media-form" data-founder-media-form>
+                    <label>
+                        <span>Caption (optional)</span>
+                        <input type="text" name="title" maxlength="100" placeholder="Add a caption">
+                    </label>
+                    <label>
+                        <span>Photo or video file</span>
+                        <input type="file" name="mediaFile" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg" required>
+                    </label>
+                    <button class="action-btn primary" type="submit">Upload media</button>
+                </form>
+                <p class="gallery-modal__help">Photos must be 4 MB or smaller. Videos must be 50 MB or smaller (MP4, WebM, or OGG).</p>
+                <p class="gallery-manager__message" data-founder-media-message role="status" aria-live="polite"></p>
+                <div class="gallery-manager__grid" data-founder-media-grid></div>
+                <p class="submissions-storage-note">This static website saves uploaded media in this browser only. It is not automatically shared with other devices or visitors.</p>
+            </section>
         </main>
     </div>
 
@@ -415,6 +444,7 @@
 
     <script src="js/i18n.js?v=ar-full-11"></script>
     <script src="js/gallery.js?v=gallery-1"></script>
+    <script src="js/founder-media.js?v=founder-media-1"></script>
     <script src="js/admin.js?v=ar-full-1"></script>
 </body>
 </html>

@@ -1172,6 +1172,18 @@ textarea.form-control {
     transition: var(--transition);
 }
 
+.founder-media-grid .gallery-item video {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    background: #111;
+}
+
+.founder-media-grid .gallery-caption {
+    transform: none;
+}
+
 .gallery-placeholder {
     width: 100%;
     height: 250px;

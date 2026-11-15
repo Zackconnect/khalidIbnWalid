@@ -643,6 +643,155 @@ if (galleryModal) {
     });
 }
 
+const founderMediaApi = window.KWFounderMedia;
+const founderMediaForm = document.querySelector('[data-founder-media-form]');
+const founderMediaGrid = document.querySelector('[data-founder-media-grid]');
+const founderMediaMessage = document.querySelector('[data-founder-media-message]');
+let founderMediaItems = [];
+let founderMediaObjectUrls = [];
+
+function setFounderMediaMessage(message, isError = false) {
+    if (!founderMediaMessage) {
+        return;
+    }
+
+    founderMediaMessage.textContent = message;
+    founderMediaMessage.classList.toggle('is-error', isError);
+}
+
+function renderFounderMedia() {
+    if (!founderMediaApi || !founderMediaGrid) {
+        return;
+    }
+
+    founderMediaObjectUrls.forEach((url) => URL.revokeObjectURL(url));
+    founderMediaObjectUrls = [];
+
+    if (!founderMediaItems.length) {
+        founderMediaGrid.innerHTML = '<p class="gallery-manager__empty">No founder photos or videos have been added yet.</p>';
+        return;
+    }
+
+    founderMediaGrid.innerHTML = founderMediaItems.map((item) => {
+        const url = URL.createObjectURL(item.blob);
+        founderMediaObjectUrls.push(url);
+        const title = founderMediaApi.escapeHtml(item.title);
+        const preview = item.mimeType.startsWith('video/')
+            ? `<video controls preload="metadata" aria-label="${title}"><source src="${url}" type="${founderMediaApi.escapeHtml(item.mimeType)}"></video>`
+            : `<img src="${url}" alt="">`;
+
+        return `
+            <article class="gallery-admin-card">
+                <div class="gallery-admin-card__image">${preview}</div>
+                <div class="gallery-admin-card__content">
+                    <h3 class="gallery-admin-card__title">${title}</h3>
+                    <span class="gallery-admin-card__category">${item.mimeType.startsWith('video/') ? 'Video' : 'Photo'}</span>
+                    <div class="gallery-admin-card__actions">
+                        <button class="table-action delete" type="button" data-founder-media-action="delete" data-id="${founderMediaApi.escapeHtml(item.id)}">Delete</button>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+async function loadFounderMedia() {
+    if (!founderMediaApi || !founderMediaGrid) {
+        return;
+    }
+
+    try {
+        founderMediaItems = await founderMediaApi.getAll();
+        renderFounderMedia();
+    } catch (error) {
+        console.error('Unable to load founder media.', error);
+        setFounderMediaMessage(error.message || 'Founder media could not be loaded.', true);
+    }
+}
+
+if (founderMediaForm && founderMediaApi) {
+    founderMediaForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        setFounderMediaMessage('');
+
+        const fileInput = founderMediaForm.querySelector('[name="mediaFile"]');
+        const file = fileInput.files[0];
+        const submitButton = founderMediaForm.querySelector('[type="submit"]');
+
+        if (!file) {
+            setFounderMediaMessage('Choose a photo or video to upload.', true);
+            return;
+        }
+
+        const maxSize = file.type.startsWith('image/') ? 4 * 1024 * 1024 : 50 * 1024 * 1024;
+        if (!founderMediaApi.isSupportedType(file.type)) {
+            setFounderMediaMessage('Use a JPG, PNG, WebP, GIF, MP4, WebM, or OGG file.', true);
+            return;
+        }
+        if (file.size > maxSize) {
+            setFounderMediaMessage(file.type.startsWith('image/')
+                ? 'Photos must be 4 MB or smaller.'
+                : 'Videos must be 50 MB or smaller.', true);
+            return;
+        }
+
+        const titleInput = founderMediaForm.querySelector('[name="title"]');
+        const title = titleInput.value.trim() || file.name.replace(/\.[^.]+$/, '');
+        submitButton.disabled = true;
+
+        try {
+            const item = {
+                id: createRecordId(),
+                title,
+                mimeType: file.type,
+                blob: file.slice(0, file.size, file.type),
+                createdAt: Date.now()
+            };
+            await founderMediaApi.save(item);
+            founderMediaItems = await founderMediaApi.getAll();
+            renderFounderMedia();
+            founderMediaForm.reset();
+            setFounderMediaMessage(`${title} uploaded. It is available on the Founder page in this browser.`);
+        } catch (error) {
+            console.error('Unable to save founder media.', error);
+            setFounderMediaMessage(error.message || 'The media file could not be saved in this browser.', true);
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+}
+
+if (founderMediaGrid && founderMediaApi) {
+    founderMediaGrid.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-founder-media-action="delete"]');
+        if (!button) {
+            return;
+        }
+
+        const item = founderMediaItems.find((media) => media.id === button.dataset.id);
+        if (!item) {
+            return;
+        }
+
+        const confirmation = `Delete "${item.title}" from the Founder page?`;
+        if (!window.confirm(window.KWTranslate ? window.KWTranslate(confirmation) : confirmation)) {
+            return;
+        }
+
+        try {
+            await founderMediaApi.remove(item.id);
+            founderMediaItems = await founderMediaApi.getAll();
+            renderFounderMedia();
+            setFounderMediaMessage(`"${item.title}" was deleted.`);
+        } catch (error) {
+            console.error('Unable to delete founder media.', error);
+            setFounderMediaMessage(error.message || 'The media file could not be deleted.', true);
+        }
+    });
+}
+
+loadFounderMedia();
+
 window.addEventListener('storage', (event) => {
     if (event.key === 'khalid-ibn-walid-gallery' && galleryApi) {
         galleryItems = galleryApi.loadItems();
